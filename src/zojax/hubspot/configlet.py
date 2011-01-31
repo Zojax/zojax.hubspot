@@ -7,6 +7,7 @@ from xml.parsers.expat import ExpatError
 from zope import component, interface, schema
 
 from interfaces import _, ILeadFormFactory, ILeadForm
+from zojax.catalog.utils import getRequest
 
 logger = logging.getLogger("zojax.hubspot")
 
@@ -14,17 +15,22 @@ logger = logging.getLogger("zojax.hubspot")
 class HubSpotConfiglet(object):
 
     def postForm(self, formName, **data):
+        request = getRequest()
+        
+        def force_unicode(s):
+            if isinstance(s, unicode):
+                return s.encode('utf-8')
+            return s
+        data = dict(map(lambda (x, y): (x, force_unicode(y)), data.items()))
+        
+        data['UserToken'] = request.getCookie('hubspotutk')
+        data['IPAddress'] = request.get('REMOTE_ADDR', '')
         apiUrl = self.apiURL
         if not self.enabled:
             return
         if not apiUrl:
             # HubSpot API is not configured. Abort the submission.
             logger.warning("HubSpot API is not configured.")
-            return
-        try:
-            form = self.getForm(formName)
-        except KeyError:
-            logger.warning('Wrong form name', exc_info=True)
             return
         url = '%s?%s'%(apiUrl, urllib.urlencode(dict(data, app='leaddirector', FormName=formName)))
         try:

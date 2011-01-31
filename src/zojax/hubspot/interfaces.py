@@ -3,6 +3,27 @@ from zope.i18nmessageid.message import MessageFactory
 
 _ = MessageFactory('zojax.hubspot')
 
+hubspot_fields = [
+                  'FirstName',
+                  'LastName',
+                  'Email',
+                  'TwitterHandle',
+                  'Phone',
+                  'Fax',
+                  'Company',
+                  'Address',
+                  'JobTitle',
+                  'City',
+                  'State',
+                  'ZipCode',
+                  'Country',
+                  'Message',
+                  'Website',
+                  'NumberEmployees',
+                  'Annual Revenue',
+                  'CloseDate'
+    ]
+
 
 class ILeadFormFactory(interface.Interface):
 

@@ -58,6 +58,7 @@ setup(name = 'zojax.hubspot',
                           'zope.i18n',
                           'zope.i18nmessageid',
                           'zojax.controlpanel',
+                          'zojax.catalog'
                           ],
       extras_require = dict(test=['zope.app.testing',
                                   'zope.testing',
