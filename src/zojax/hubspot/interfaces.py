@@ -49,7 +49,9 @@ class IHubSpotConfiglet(interface.Interface):
                              default="http://your-shortname.app101.hubspot.com/")
     forms = schema.Tuple(title=_(u"Forms"),
                          value_type=schema.Object(title=_(u'form'),
-                                                 schema=ILeadForm))
+                                                 schema=ILeadForm),
+                         default=(),
+                         required=False)
 
     def getForm(name):
         """get form by name"""
