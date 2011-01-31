@@ -56,7 +56,8 @@ class HubSpotConfiglet(object):
 
     @setproperty
     def forms(self, value):
-        self.data['forms'] = dict([(lst.name, lst) for lst in value])
+        if value:
+            self.data['forms'] = dict([(lst.name, lst) for lst in value])
 
     def getForm(self, name):
         forms = self.forms
