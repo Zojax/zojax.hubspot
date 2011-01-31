@@ -1,0 +1,57 @@
+==========
+HubSpot
+==========
+
+    >>> from zope import component, interface
+    >>> from zope.testbrowser.testing import Browser
+    >>> from zope.app.component.hooks import setSite
+    >>> from zope.app.testing.functional import getRootFolder
+    >>> from zope.app.intid import IntIds
+    >>> from zope.app.intid.interfaces import IIntIds
+    >>> from zojax.hubspot.interfaces import IHubSpotConfiglet
+    >>> from zojax.hubspot import forms
+    >>> forms.registerFactoryAdapter(forms.ILeadForm, forms.LeadForm)
+
+    >>> root = getRootFolder()
+    >>> setSite(root)
+    >>> sm = root.getSiteManager()
+
+HubSpot configlet
+
+    >>> admin = Browser()
+    >>> admin.handleErrors = False
+    >>> admin.addHeader("Authorization", "Basic mgr:mgrpw")
+
+    >>> configlet = component.getUtility(IHubSpotConfiglet)
+    >>> configlet.forms
+    [<zojax.hubspot.forms.LeadForm object ...>]
+    >>> form = configlet.getForm('testForm')
+    >>> form.name, form.title
+    (u'testForm', u'Test Form')
+
+    >>> admin.open("http://localhost/settings/")
+    >>> admin.getLink('HubSpot').click()
+    >>> admin.getControl(name='form.widgets.enabled:list').value = ['true']
+    >>> admin.getControl('API Url').value = 'http://quickstat.app101.hubspot.com/'
+    >>> admin.getControl(name='form.widgets.forms.buttons.add').click()
+    >>> admin.getControl(name='form.widgets.forms.0.widgets.name').value = 'test'
+    >>> admin.getControl('Save').click()
+
+    >>> configlet.getForm('testForm').name
+    u'testForm'
+
+We need testing method instead of real connection
+
+    >>> from urllib import urlopen
+    >>> import urllib
+    >>> def test_urlopen(url):
+    ...   print url
+    >>> urllib.urlopen = test_urlopen
+
+    >>> configlet.postForm('testForm', **{'email':'some@some.com'})
+    http://quickstat.app101.hubspot.com/?app=leaddirector&email=some%40some.com&FormName=testForm
+
+
+Return back
+
+    >>> urllib.urlopen = urlopen

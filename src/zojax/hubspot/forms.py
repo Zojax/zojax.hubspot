@@ -1,11 +1,11 @@
 from zope import component, interface, schema
 from z3c.form.object import registerFactoryAdapter
 
-from interfaces import _, IEmailListFactory, IEmailList
+from interfaces import _, ILeadFormFactory, ILeadForm
 
 
-class EmailList(object):
-    interface.implements(IEmailList)
+class LeadForm(object):
+    interface.implements(ILeadForm)
 
     title = None
 
@@ -18,15 +18,15 @@ class EmailList(object):
         self.title = unicode(title)
 
 
-class EmailListFactory(object):
-    interface.implements(IEmailListFactory)
+class LeadFormFactory(object):
+    interface.implements(ILeadFormFactory)
 
     title = None
 
     name = None
 
     def __call__(self):
-        return EmailList(self.name, self.title)
+        return LeadForm(self.name, self.title)
 
 
-registerFactoryAdapter(IEmailList, EmailList)
+registerFactoryAdapter(ILeadForm, LeadForm)

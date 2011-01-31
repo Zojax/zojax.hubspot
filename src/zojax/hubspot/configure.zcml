@@ -1,0 +1,21 @@
+<configure
+   xmlns="http://namespaces.zope.org/zope"
+   xmlns:zojax="http://namespaces.zope.org/zojax"
+   i18n_domain="zojax.hubspot">
+
+  <!--
+     $Id$
+    -->
+
+  <zojax:configlet
+    name="system.hubspot"
+    schema=".interfaces.IHubSpotConfiglet"
+    title="HubSpot Configuration"
+    class=".configlet.HubSpotConfiglet"
+    description="Configure HubSpot API" />
+
+  <class class=".forms.LeadForm">
+    <allow interface=".interfaces.ILeadForm" />
+  </class>
+
+</configure>

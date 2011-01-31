@@ -11,7 +11,7 @@
 # FOR A PARTICULAR PURPOSE.
 #
 ##############################################################################
-"""Setup for zojax.whatcounts package
+"""Setup for zojax.hubspot package
 
 $Id$
 """
@@ -24,11 +24,11 @@ def read(*rnames):
 version='0'
 
 
-setup(name = 'zojax.whatcounts',
+setup(name = 'zojax.hubspot',
       version = version,
       author = 'Anatoly Bubenkov',
       author_email = 'bubenkoff@gmail.com',
-      description = "Whatcounts integration for zojax",
+      description = "HubSpot integration for zojax",
       long_description = (
         'Detailed Documentation\n' +
         '======================\n'
@@ -57,13 +57,7 @@ setup(name = 'zojax.whatcounts',
                           'zope.schema',
                           'zope.i18n',
                           'zope.i18nmessageid',
-                          'zope.app.intid',
-                          'zope.app.keyreference',
-                          'zope.app.undo',
-                          'zope.datetime',
-                          'zojax.extensions',
                           'zojax.controlpanel',
-                          'PyWhatCounts',
                           ],
       extras_require = dict(test=['zope.app.testing',
                                   'zope.testing',

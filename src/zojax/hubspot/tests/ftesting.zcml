@@ -8,16 +8,16 @@
   <!-- used for functional testing setup -->
 
   <include package="zojax.autoinclude" file="meta.zcml" />
-  <includeAllDependencies package="zojax.whatcounts" extras="test" />
+  <includeAllDependencies package="zojax.hubspot" extras="test" />
 
-  <includeOverrides package="zojax.whatcounts.tests" file="overrides.zcml" />
+  <includeOverrides package="zojax.hubspot.tests" file="overrides.zcml" />
 
   <securityPolicy
      component="zope.securitypolicy.zopepolicy.ZopeSecurityPolicy" />
 
   <interface
      name="DefaultSkin"
-     interface="zojax.whatcounts.tests.tests.IDefaultSkin"
+     interface="zojax.hubspot.tests.tests.IDefaultSkin"
      type="zope.publisher.interfaces.browser.IBrowserSkinType" />
 
   <browser:defaultSkin name="DefaultSkin" />
@@ -26,10 +26,10 @@
   <zojax:content
      name="content1"
      title="Content 1"
-     schema="zojax.whatcounts.tests.tests.IContent"
-     class="zojax.whatcounts.tests.tests.Content" />
+     schema="zojax.hubspot.tests.tests.IContent"
+     class="zojax.hubspot.tests.tests.Content" />
 
-  <class class="zojax.whatcounts.tests.tests.Content">
+  <class class="zojax.hubspot.tests.tests.Content">
     <implements interface="zojax.content.type.interfaces.ISearchableContent" />
     <require
        permission="zope.View"
@@ -40,11 +40,11 @@
   <zojax:content
      name="content2"
      title="Content 2"
-     schema="zojax.whatcounts.tests.tests.IPortalContent"
-     class="zojax.whatcounts.tests.tests.PortalContent"
+     schema="zojax.hubspot.tests.tests.IPortalContent"
+     class="zojax.hubspot.tests.tests.PortalContent"
      type="zojax.content.type.interfaces.IPortalType" />
 
-  <class class="zojax.whatcounts.tests.tests.PortalContent">
+  <class class="zojax.hubspot.tests.tests.PortalContent">
     <implements interface="zojax.content.type.interfaces.ISearchableContent" />
     <require
        permission="zope.View"
@@ -60,8 +60,8 @@
      class="zope.app.folder.folder.Folder"
      type="zojax.content.type.interfaces.IPortalType" />
      
-  <utility factory="zojax.whatcounts.tests.tests.TestListFactory"
-           name="testList" />
+  <utility factory="zojax.hubspot.tests.tests.TestLeadFormFactory"
+           name="testForm" />
 
   <!-- roles -->
   <role id="zope.Anonymous" title="Everybody"

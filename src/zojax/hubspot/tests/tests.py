@@ -28,14 +28,14 @@ from zojax.layoutform.interfaces import ILayoutFormLayer
 from zojax.content.type.item import PersistentItem
 from zojax.content.type.interfaces import IItem
 
-from zojax.whatcounts.emaillist import EmailListFactory
+from zojax.hubspot.forms import LeadFormFactory
 
 
-class TestListFactory(EmailListFactory):
+class TestLeadFormFactory(LeadFormFactory):
 
-    name = u'testList'
+    name = u'testForm'
 
-    title = u'Test List'
+    title = u'Test Form'
 
 
 class IDefaultSkin(ILayoutFormLayer, Rotterdam):
@@ -70,15 +70,15 @@ class PortalContent(PersistentItem):
     interface.implements(IPortalContent, IAttributeAnnotatable)
 
 
-undo = ZCMLLayer(
+hubspot = ZCMLLayer(
     os.path.join(os.path.split(__file__)[0], 'ftesting.zcml'),
-    __name__, 'undo', allow_teardown=True)
+    __name__, 'hubspot', allow_teardown=True)
 
 
 def test_suite():
     test = doctest.DocFileSuite(
         "tests.txt",
         optionflags=doctest.ELLIPSIS|doctest.NORMALIZE_WHITESPACE)
-    test.layer = undo
+    test.layer = hubspot
 
     return unittest.TestSuite((test,))
