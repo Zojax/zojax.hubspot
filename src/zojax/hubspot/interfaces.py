@@ -3,7 +3,7 @@ from zope.i18nmessageid.message import MessageFactory
 
 _ = MessageFactory('zojax.hubspot')
 
-hubspot_fields = [
+HUBSPOT_FIELDS = [
                   'FirstName',
                   'LastName',
                   'Email',
