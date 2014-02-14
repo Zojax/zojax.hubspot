@@ -42,14 +42,20 @@ HubSpot configlet
 
 We need testing method instead of real connection
 
+    >>> from zope.publisher.browser import TestRequest
+    >>> from zope.security.management import endInteraction, newInteraction
+    >>> endInteraction()
     >>> from urllib import urlopen
     >>> import urllib
     >>> def test_urlopen(url):
     ...   print url
     >>> urllib.urlopen = test_urlopen
 
+    >>> request = TestRequest()
+    >>> setattr(request, 'getCookie', lambda x: 'testcookie')
+    >>> newInteraction(request)
     >>> configlet.postForm('testForm', **{'email':'some@some.com'})
-    http://quickstat.app101.hubspot.com/?app=leaddirector&email=some%40some.com&FormName=testForm
+    http://quickstat.app101.hubspot.com/?UserToken=testcookie&app=leaddirector&IPAddress=&email=some%40some.com&FormName=testForm
 
 
 Return back

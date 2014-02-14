@@ -67,6 +67,7 @@ setup(name = 'zojax.hubspot',
                                   'zope.app.zcmlfiles',
                                   'zojax.content.type',
                                   'zojax.autoinclude',
+                                  'zojax.content.browser',
                                   ]),
       include_package_data = True,
       zip_safe = False
