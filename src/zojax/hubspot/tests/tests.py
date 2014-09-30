@@ -17,17 +17,19 @@ $Id$
 """
 import os.path
 import unittest, doctest
-from zope import interface
+from zope import interface, event
 from zope.app.component.hooks import setSite
 from zope.app.intid import IntIds
 from zope.app.intid.interfaces import IIntIds
-from zope.app.testing import setup, functional
+from zope.app.testing import functional
 from zope.app.testing.functional import ZCMLLayer
 from zope.annotation.interfaces import IAttributeAnnotatable
 from zope.app.container.interfaces import IContainer as IBaseContainer
 from zope.app.rotterdam import Rotterdam
-from zope.app.container.sample import SampleContainer
+from zope.lifecycleevent import ObjectCreatedEvent
+from zope.security.management import newInteraction, endInteraction
 from zojax.layoutform.interfaces import ILayoutFormLayer
+from zojax.content.space.content import ContentSpace
 from zojax.content.type.item import PersistentItem
 from zojax.content.type.interfaces import IItem
 
@@ -86,9 +88,13 @@ def FunctionalDocFileSuite(*paths, **kw):
     globs['getRootFolder'] = functional.getRootFolder
     globs['sync'] = functional.sync
 
+    kw['package'] = doctest._normalize_module(kw.get('package'))
+
     kwsetUp = kw.get('setUp')
     def setUp(test):
         functional.FunctionalTestSetup().setUp()
+
+        newInteraction()
 
         root = functional.getRootFolder()
         setSite(root)
@@ -98,6 +104,13 @@ def FunctionalDocFileSuite(*paths, **kw):
         root['ids'] = IntIds()
         sm.registerUtility(root['ids'], IIntIds)
         root['ids'].register(root)
+
+        # space
+        space = ContentSpace(title=u'Space')
+        event.notify(ObjectCreatedEvent(space))
+        root['space'] = space
+
+        endInteraction()
 
     kw['setUp'] = setUp
 

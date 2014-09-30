@@ -1,0 +1,28 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:zojax="http://namespaces.zope.org/zojax"
+    xmlns:browser="http://namespaces.zope.org/browser"
+    i18n_domain="zojax.hubspot">
+
+  <browser:defaultView
+     name="index.html"
+     for="..interfaces.IEmbedHubSpotForm" />
+
+  <zojax:pagelet
+     name="index.html"
+     for="..interfaces.IEmbedHubSpotForm"
+     template="templates/hubspot-form.pt"
+     class=".views.EmbedHubSpotFormView"
+     permission="zope.View" />
+
+  <browser:icon
+     name="zmi_icon"
+     for="..interfaces.IEmbedHubSpotForm"
+     file="resources/images/hubspot.png" />
+
+  <browser:icon
+     name="zmi_icon"
+     for="..interfaces.IEmbedHubSpotFormType"
+     file="resources/images/hubspot.png" />
+
+</configure>

@@ -1,0 +1,7 @@
+<div>
+    <h1 class="z-content-title" tal:content="context/title"></h1>
+
+    <div class="z-page-text" tal:content="structure context/body/cooked"></div>
+
+    <div class="z-hubspot-form" tal:content="structure context/embed"></div>
+</div>

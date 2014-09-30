@@ -1,7 +1,29 @@
-from zope import component, interface, schema
+##############################################################################
+#
+# Copyright (c) 2008 Zope Foundation and Contributors.
+# All Rights Reserved.
+#
+# This software is subject to the provisions of the Zope Public License,
+# Version 2.1 (ZPL).  A copy of the ZPL should accompany this distribution.
+# THIS SOFTWARE IS PROVIDED "AS IS" AND ANY AND ALL EXPRESS OR IMPLIED
+# WARRANTIES ARE DISCLAIMED, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+# WARRANTIES OF TITLE, MERCHANTABILITY, AGAINST INFRINGEMENT, AND FITNESS
+# FOR A PARTICULAR PURPOSE.
+#
+##############################################################################
+"""
+
+$Id$
+"""
+from zope import interface
+from zope.schema.fieldproperty import FieldProperty
+
 from z3c.form.object import registerFactoryAdapter
 
-from interfaces import _, ILeadFormFactory, ILeadForm
+from zojax.content.type.item import PersistentItem
+from zojax.richtext.field import RichTextProperty
+
+from interfaces import ILeadFormFactory, ILeadForm, IEmbedHubSpotForm
 
 
 class LeadForm(object):
@@ -30,3 +52,10 @@ class LeadFormFactory(object):
 
 
 registerFactoryAdapter(ILeadForm, LeadForm)
+
+
+class EmbedHubSpotForm(PersistentItem):
+    interface.implements(IEmbedHubSpotForm)
+
+    body = RichTextProperty(IEmbedHubSpotForm['body'])
+    embed = FieldProperty(IEmbedHubSpotForm['embed'])

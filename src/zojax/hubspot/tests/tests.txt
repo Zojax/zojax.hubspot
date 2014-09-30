@@ -16,11 +16,63 @@ HubSpot
     >>> setSite(root)
     >>> sm = root.getSiteManager()
 
-HubSpot configlet
-
     >>> admin = Browser()
     >>> admin.handleErrors = False
     >>> admin.addHeader("Authorization", "Basic mgr:mgrpw")
+
+    >>> user = Browser()
+    >>> user.addHeader("Authorization", "Basic user:userpw")
+    >>> user.handleErrors = False
+
+
+HubSpot Form
+------------
+
+
+add HubSpot form
+
+    >>> admin.open('http://localhost/space/+/hubspot.form/')
+    >>> admin.getControl('Title').value = 'Test HubSpot Form'
+    >>> admin.getControl('Before the Form text').value = 'HubSpot Form Description'
+    >>> admin.getControl('Embed a snippet from HubSpot').value = """
+    ... <script charset="utf-8" src="//js.hsforms.net/forms/current.js"></script>
+    ... <script>
+    ...   hbspt.forms.create({
+    ...     portalId: '62515',
+    ...     formId: 'dc6b2f6d-6b60-4636-b552-feb3867e04ef'
+    ...   });
+    ... </script>
+    ... """
+    >>> admin.getControl('Add').click()
+    >>> admin.url
+    'http://localhost/space/test-hubspot-form/'
+
+
+check HubSpot form
+
+    >>> admin.open('http://localhost/space/test-hubspot-form/')
+    >>> print admin.contents
+    <html>
+    ...
+        <h1 class="z-content-title">Test HubSpot Form</h1>
+    <BLANKLINE>
+        <div class="z-page-text">HubSpot Form Description</div>
+    <BLANKLINE>
+        <div class="z-hubspot-form">
+    <script charset="utf-8" src="//js.hsforms.net/forms/current.js"></script>
+    <script>
+      hbspt.forms.create({
+        portalId: '62515',
+        formId: 'dc6b2f6d-6b60-4636-b552-feb3867e04ef'
+      });
+    </script>
+        </div>
+    ...
+    </html>
+
+
+HubSpot configlet
+-----------------
 
     >>> configlet = component.getUtility(IHubSpotConfiglet)
     >>> configlet.forms
@@ -61,3 +113,5 @@ We need testing method instead of real connection
 Return back
 
     >>> urllib.urlopen = urlopen
+
+    >>> setSite(None)

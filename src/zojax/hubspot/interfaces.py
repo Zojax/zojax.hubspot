@@ -1,5 +1,26 @@
-from zope import interface, schema
+##############################################################################
+#
+# Copyright (c) 2008 Zope Foundation and Contributors.
+# All Rights Reserved.
+#
+# This software is subject to the provisions of the Zope Public License,
+# Version 2.1 (ZPL).  A copy of the ZPL should accompany this distribution.
+# THIS SOFTWARE IS PROVIDED "AS IS" AND ANY AND ALL EXPRESS OR IMPLIED
+# WARRANTIES ARE DISCLAIMED, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+# WARRANTIES OF TITLE, MERCHANTABILITY, AGAINST INFRINGEMENT, AND FITNESS
+# FOR A PARTICULAR PURPOSE.
+#
+##############################################################################
+"""
+
+$Id$
+"""
+from zope import interface
 from zope.i18nmessageid.message import MessageFactory
+from zope.schema import Bool, Object, Text, TextLine, Tuple, URI
+
+from zojax.content.type.interfaces import IItem
+from zojax.richtext.field import RichText
 
 _ = MessageFactory('zojax.hubspot')
 
@@ -27,28 +48,28 @@ HUBSPOT_FIELDS = [
 
 class ILeadFormFactory(interface.Interface):
 
-    name = schema.TextLine(title=_(u'Name'))
+    name = TextLine(title=_(u'Name'))
 
-    title = schema.TextLine(title=_(u'Title'))
+    title = TextLine(title=_(u'Title'))
 
 
 class ILeadForm(interface.Interface):
 
-    name = schema.TextLine(title=_(u'Name'))
+    name = TextLine(title=_(u'Name'))
 
-    title = schema.TextLine(title=_(u'Title'))
+    title = TextLine(title=_(u'Title'))
 
 
 class IHubSpotConfiglet(interface.Interface):
 
-    enabled = schema.Bool(title=_(u'Enabled'),
+    enabled = Bool(title=_(u'Enabled'),
                           default=False)
-    
-    apiURL = schema.URI(title=_(u'API Url'),
+
+    apiURL = URI(title=_(u'API Url'),
 
                              default="http://your-shortname.app101.hubspot.com/")
-    forms = schema.Tuple(title=_(u"Forms"),
-                         value_type=schema.Object(title=_(u'form'),
+    forms = Tuple(title=_(u"Forms"),
+                         value_type=Object(title=_(u'form'),
                                                  schema=ILeadForm),
                          default=(),
                          required=False)
@@ -58,3 +79,22 @@ class IHubSpotConfiglet(interface.Interface):
 
     def postForm(formName, **data):
         """ post form """
+
+
+class IEmbedHubSpotForm(IItem):
+    """ HubSpot Form """
+
+    description = interface.Attribute('Object Description')
+
+    body = RichText(
+        title = _(u'Before the Form text'),
+        required = False)
+
+    embed = Text(
+        title=_(u"Embed a snippet from HubSpot"),
+        required=True)
+
+
+class IEmbedHubSpotFormType(interface.Interface):
+    """ HubSpot Form type """
+

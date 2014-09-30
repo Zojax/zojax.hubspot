@@ -6,10 +6,6 @@
 
   <i18n:registerTranslations directory="locales" />
 
-  <!--
-     $Id$
-    -->
-
   <zojax:configlet
     name="system.hubspot"
     schema=".interfaces.IHubSpotConfiglet"
@@ -20,5 +16,46 @@
   <class class=".forms.LeadForm">
     <allow interface=".interfaces.ILeadForm" />
   </class>
+
+  <permission
+     id="zojax.AddHubSpotForm"
+     title="Add HubSpot Form"
+     description="Allow add HubSpot forms to portal." />
+
+  <zojax:permission
+     permission="zojax.AddHubSpotForm"
+     category="zojax.content.permissions.interfaces.IAddPermission" />
+
+  <zojax:contentpermission
+     contenttype="hubspot.form"
+     permission="zojax.AddHubSpotForm"
+     managepermission="zojax.ManageContentPermission"
+     category="zojax.content.permissions.interfaces.IAddPermission" />
+
+  <zojax:content
+     title="HubSpot Form"
+     description="Embed Form from HubSpot"
+     name="hubspot.form"
+     schema=".interfaces.IEmbedHubSpotForm"
+     class=".forms.EmbedHubSpotForm"
+     contenttype=".interfaces.IEmbedHubSpotFormType"
+     type="zojax.content.type.interfaces.IActivePortalType
+           zojax.content.space.interfaces.IContentSpaceType"
+     permission="zojax.AddHubSpotForm" />
+
+  <class class=".forms.EmbedHubSpotForm">
+    <implements interface="zojax.content.type.interfaces.ITitleBasedName" />
+
+    <require permission="zope.View"
+        interface=".interfaces.IEmbedHubSpotForm
+                   zope.app.container.interfaces.IReadContainer" />
+
+    <require permission="zojax.ModifyContent"
+        set_schema=".interfaces.IEmbedHubSpotForm"
+        interface="zope.app.container.interfaces.IWriteContainer" />
+
+  </class>
+
+  <include package=".browser" />
 
 </configure>

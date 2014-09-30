@@ -1,19 +1,15 @@
 <configure
    xmlns="http://namespaces.zope.org/zope"
-   xmlns:browser="http://namespaces.zope.org/browser"
    xmlns:zojax="http://namespaces.zope.org/zojax"
+   xmlns:browser="http://namespaces.zope.org/browser"
    i18n_domain="zojax.hubspot">
 
-  <!-- This file is the equivalent of site.zcml and it is -->
-  <!-- used for functional testing setup -->
+  <!--exclude package="zope.app.securitypolicy.browser" /-->
 
   <include package="zojax.autoinclude" file="meta.zcml" />
   <includeAllDependencies package="zojax.hubspot" extras="test" />
 
   <includeOverrides package="zojax.hubspot.tests" file="overrides.zcml" />
-
-  <securityPolicy
-     component="zope.securitypolicy.zopepolicy.ZopeSecurityPolicy" />
 
   <interface
      name="DefaultSkin"
@@ -22,35 +18,7 @@
 
   <browser:defaultSkin name="DefaultSkin" />
 
-  <!-- content types -->
-  <zojax:content
-     name="content1"
-     title="Content 1"
-     schema="zojax.hubspot.tests.tests.IContent"
-     class="zojax.hubspot.tests.tests.Content" />
-
-  <class class="zojax.hubspot.tests.tests.Content">
-    <implements interface="zojax.content.type.interfaces.ISearchableContent" />
-    <require
-       permission="zope.View"
-       set_schema="zojax.content.type.interfaces.IItem"
-       interface="zojax.content.type.interfaces.IItem" />
-  </class>
-
-  <zojax:content
-     name="content2"
-     title="Content 2"
-     schema="zojax.hubspot.tests.tests.IPortalContent"
-     class="zojax.hubspot.tests.tests.PortalContent"
-     type="zojax.content.type.interfaces.IPortalType" />
-
-  <class class="zojax.hubspot.tests.tests.PortalContent">
-    <implements interface="zojax.content.type.interfaces.ISearchableContent" />
-    <require
-       permission="zope.View"
-       set_schema="zojax.content.type.interfaces.IItem"
-       interface="zojax.content.type.interfaces.IItem" />
-  </class>
+  <securityPolicy component="zojax.security.securitypolicy.SecurityPolicy" />
 
   <!-- portal -->
   <zojax:content
@@ -59,7 +27,7 @@
      schema="zope.app.folder.interfaces.IFolder"
      class="zope.app.folder.folder.Folder"
      type="zojax.content.type.interfaces.IPortalType" />
-     
+
   <utility factory="zojax.hubspot.tests.tests.TestLeadFormFactory"
            name="testForm" />
 
@@ -92,6 +60,11 @@
       title="User"
       login="user"
       password="userpw" />
+
+  <everybodyGroup
+      id="zope.Everybody"
+      title="All Users"
+      />
 
   <grant role="zope.Manager" principal="zope.mgr" />
 
